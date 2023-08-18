@@ -20,10 +20,8 @@ void main() {
   double sisiPersegi = 10;
   double panjangPersegiPanjang = 20;
   double lebarPersegiPanjang = 5;
-
   double luasPersegi = hitungLuasPersegi(sisiPersegi);
   double kelilingPersegi = hitungKelilingPersegi(sisiPersegi);
-
   double luasPersegiPanjang =
       hitungLuasPersegiPanjang(panjangPersegiPanjang, lebarPersegiPanjang);
   double kelilingPersegiPanjang =
@@ -31,7 +29,6 @@ void main() {
 
   print('Luas Persegi: $luasPersegi');
   print('Keliling Persegi: $kelilingPersegi');
-
   print('Luas Persegi Panjang: $luasPersegiPanjang');
   print('Keliling Persegi Panjang: $kelilingPersegiPanjang');
 }
