@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:intl/intl.dart';
 
 void main() => runApp(MyApp());
 
@@ -28,6 +30,9 @@ class _NewContactsPageState extends State<NewContactsPage> {
   List<Contact> contacts = [];
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
+  DateTime _dueDate = DateTime.now();
+  final currentDate = DateTime.now();
+  Color _currentColor = Colors.grey;
 
   void initializeContacts() {
     contacts = [
@@ -55,9 +60,9 @@ class _NewContactsPageState extends State<NewContactsPage> {
           children: [
             Icon(
               Icons.phone_android,
-              size: 30.0,
+              size: 25.0,
             ),
-            SizedBox(height: 12.0),
+            SizedBox(height: 10.0),
             Text(
               'Create New Contacts',
               style: TextStyle(
@@ -66,7 +71,7 @@ class _NewContactsPageState extends State<NewContactsPage> {
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 20.0),
+            SizedBox(height: 10.0),
             Text(
               'Tambahkan kontak baru, Masukan nama dan nomor telepon',
               textAlign: TextAlign.center,
@@ -105,7 +110,11 @@ class _NewContactsPageState extends State<NewContactsPage> {
                 ),
               ),
             ),
-            SizedBox(height: 15.0),
+            buildDatePicker(context),
+            const SizedBox(
+              height: 10,
+            ),
+            buildColorPicker(context),
             Align(
               alignment: Alignment.bottomRight,
               child: Padding(
@@ -129,7 +138,7 @@ class _NewContactsPageState extends State<NewContactsPage> {
                 ),
               ),
             ),
-            SizedBox(height: 50.0),
+            SizedBox(height: 25.0),
             Text(
               'List Contacts',
               style: TextStyle(
@@ -239,6 +248,98 @@ class _NewContactsPageState extends State<NewContactsPage> {
           ],
         );
       },
+    );
+  }
+
+  Widget buildDatePicker(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text('date'),
+            TextButton(
+              onPressed: () async {
+                final selectDate = await showDatePicker(
+                  context: context,
+                  initialDate: currentDate,
+                  firstDate: DateTime(1990),
+                  lastDate: DateTime(currentDate.year + 5),
+                );
+
+                setState(
+                  () {
+                    if (selectDate != null) {
+                      _dueDate = selectDate;
+                    }
+                  },
+                );
+              },
+              child: const Text('select'),
+            ),
+          ],
+        ),
+        Text(
+          DateFormat('dd-MM-yyyy').format(_dueDate),
+        ),
+      ],
+    );
+  }
+
+  Widget buildColorPicker(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text('Color'),
+        const SizedBox(
+          height: 10,
+        ),
+        Container(
+          height: 30,
+          width: double.infinity,
+          color: _currentColor,
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Center(
+          child: ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(_currentColor),
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text('Pick Your Color'),
+                    content: BlockPicker(
+                      pickerColor: _currentColor,
+                      onColorChanged: (color) {
+                        setState(
+                          () {
+                            _currentColor = color;
+                          },
+                        );
+                      },
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Save'),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            child: const Text('Pick color'),
+          ),
+        ),
+      ],
     );
   }
 }
