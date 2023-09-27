@@ -49,7 +49,7 @@ class GalleryPage extends StatelessWidget {
             children: <Widget>[
               ListTile(
                 leading: Icon(Icons.image),
-                title: Text('View Image'),
+                title: Text('Full screen image'),
                 onTap: () {
                   Navigator.of(context).pop();
                   _navigateToNewPage(context, imagePath);
@@ -57,7 +57,7 @@ class GalleryPage extends StatelessWidget {
               ),
               ListTile(
                 leading: Icon(Icons.close),
-                title: Text('Cancel'),
+                title: Text('cancel'),
                 onTap: () => Navigator.of(context).pop(),
               ),
             ],
